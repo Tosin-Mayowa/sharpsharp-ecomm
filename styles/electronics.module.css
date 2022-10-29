@@ -1,0 +1,101 @@
+.EparentDiv{
+    display: grid;
+    grid-template-columns: 30% 50% 20%;
+    margin-top: 100px;
+  
+}
+
+.Col2{
+    /* background-color:; */
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    box-shadow: 0px 4px 35px rgba(168, 172, 176, 0.19);
+}
+
+.EinnerDiv{
+    
+    padding: 16px;
+    width: 250px;
+    height: 300px;
+    border-radius: 10px;
+    transform: scaleY(1);
+    transition-property: transform;
+    transition-duration: 0.5s;
+    transition-delay: 0.1s;
+    transition-timing-function: ease-in;
+    margin-top: 10px;
+}
+
+.Emiddle{
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    padding: 3px;
+}
+
+
+.EinnerDiv:hover {
+    box-shadow: 0px 4px 35px rgba(168, 172, 176, 0.19);
+    transform: scaleY(1.05);
+  }
+  
+  .EProduct {
+    display: flex;
+    justify-content: center;
+   flex-direction: column;
+  }
+  
+  
+  .EText {
+    width: 354px;
+    height: 29px;
+    font-family: "Raleway";
+    font-style: normal;
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 29px;
+    color: #1d1f22;
+    text-transform: capitalize;
+  }
+  
+  .EPriceTag {
+    width: 58px;
+    height: 29px;
+    font-family: "Raleway";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 29px;
+    text-align: right;
+    color: #1d1f22;
+    margin-right: 300px;
+    margin-top: -15px;
+  }
+  
+  .ETitle {
+  color:#fff;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 10px;
+  background: #20A39E;
+  
+  }
+  .EAddToCart{
+    color: #fff;
+    background-color: #20A39E;
+    font-size: 18px;
+    border: none;
+    text-align: center;
+  margin-left: 10px;
+  width: 200px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  }
+  
+  .EAddToCartHide{
+    display: none;
+  }
+
+  .Emiddle{
+    margin: 50px auto;
+  }
