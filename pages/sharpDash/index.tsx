@@ -1,4 +1,5 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react"
+import { useCallback, useEffect } from "react";
 import ElectronicsTable from "../../Component/ElectnicsTable/ElectronicsTable";
 import FoodsTable from "../../Component/FoodsTable/FoodsTable";
 import GroceriesTable from "../../Component/GroceriesTable/GroceriesTable";
@@ -10,9 +11,11 @@ import WearsTable from "../../Component/WearsTable/WearsTable";
 
 
 
-const ProductsUpload=()=>{
 
+const ProductsUpload=():JSX.Element=>{
 
+ 
+ 
 return (
     <>
     

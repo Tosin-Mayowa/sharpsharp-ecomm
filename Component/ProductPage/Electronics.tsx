@@ -1,25 +1,30 @@
-import { Flex, Box, Center } from "@chakra-ui/react";
+import { Flex, Box, Center, CircularProgress, Text } from "@chakra-ui/react";
 import Image from "next/image";
 import classes from './Electronics.module.css'
-import {products} from '../../dummy-data/product'
-import Link from 'next/link';
 
-export const ProductPage=()=>{
+import Link from 'next/link';
+import { currencyFormatter } from "../../lib/helpers";
+import { IE } from "../../Types/productTypes";
+type Props={
+    electData:IE[]
+}
+export const Electronics=({electData}:Props)=>{
+  
    return (
     <>
     <div>
         <h2 className={classes.Title}>Electronics Shop</h2>
     <div className={classes.AllParentDiv}>
 
-{products?.map(product=>
-<div key={product.id} className={classes.AllinnerDiv}>
+{electData?.map(product=>
+<div key={product.electId} className={classes.AllinnerDiv}>
     
-<Link href={`/electronics/${product.id}`}>
+<Link href={`/electronics/${product.electId}`}>
 <a>
 <div className={classes.Product}>
-<Image  src={`/${product.image}`} alt='product image' width={150} height={150} />
+<Image  src={product.image[0]} alt='product image' width={150} height={150} />
 <p className={classes.AllText}>{product.name}</p>
-<p className={classes.AllPriceTag}>{product.price}</p>
+<p className={classes.AllPriceTag}>{currencyFormatter(product.price)}</p>
 </div>
 
 </a>

@@ -18,10 +18,10 @@ export const NavBar = () => {
             <a className={classess.Link}>Electronics</a>
             </Link>
             <div className={classess.DropdownContent}>
-            <Link href="/electronics/appliance">
+            <Link href="/electronics">
               <p className={classess.SubLink}>Home Appliances</p>
               </Link>
-              <Link href="/electronics/phones">
+              <Link href="/electronics/mobile">
               <p className={classess.SubLink}>mobile phones</p>
               </Link>
               <Link href="/electronics/computer">
