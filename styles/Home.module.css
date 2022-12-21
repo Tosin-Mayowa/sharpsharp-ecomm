@@ -131,3 +131,264 @@
 .Typed{
   text-transform: capitalize;
 }
+
+
+/* 
+some useful code 
+export enum PermissionKey {
+  CREATE_WALLET = 'CAN CREATE WALLET TOP UP',
+  VIEW_WALLET = 'CAN VIEW ALL WALLET',
+  LIST_WALLET = 'CAN LIST WALLET API TRANSACTIONS',
+  UPDATE_SETTINGS = 'CAN UPDATE SETTINGS',
+  ALL_SETTINGS = 'CAN VIEW ALL SETTINGS',
+  VIEW_USER = 'CAN VIEW USER',
+  VIEW_ALL = 'CAN VIEW ALL USERS',
+  CREATE_USER = 'CAN CREATE USER',
+  UPDATE_USER = ' CAN UPDATE USER',
+  DELETE_USER = 'CAN DELETE USER',
+  VIEW_MERCHANT = 'CAN VIEW MERCHANT',
+  UPDATE_MERCHANT = 'CAN UPDATE MERCHANT',
+  DELETE_MERCHANT = 'CAN DELETE MERCHANT',
+  VIEW_ALL_ANALYSIS = 'CAN VIEW ALL ANALYSIS',
+  VIEW_ANALYSIS = 'CAN VIEW ANALYSIS',
+  CREATE_ANALYSIS = 'CAN CREATE ANALYSIS',
+  MANAGE_USER = 'CAN MANAGE USER',
+}
+
+export enum PermissionValue {
+  CREATE_WALLET_VALUE = 'PERMISSION CAN CREATE WALLET TRANSACTION',
+  VIEW_WALLET_VALUE = 'PERMISSION CAN VIEW ALL WALLET',
+  LIST_WALLET_VALUE = 'PERMISSION CAN LIST WALLET API TRANSACTIONS',
+  CAN_MANAGE_USER_VALUE = 'PERMISSION MANAGE USER',
+  ALL_SETTINGS_VALUE = 'PERMISSION CAN VIEW ALL SETTINGS',
+  UPDATE_SETTINGS_VALUE = 'PERMISSION CAN UPDATE SETTINGS',
+  VIEW_ALL_VALUE = 'PERMISSION CAN VIEW ALL USERS',
+  VIEW_USER_SETTINGS = 'PERMISSION CAN VIEW USER',
+  CREATE_USER_VALUE = 'PERMISSION CAN CREATE USER',
+  UPDATE_USER_VALUE = 'PERMISSION CAN UPDATE USER',
+  DELETE_USER_VALUE = 'PERMISSION CAN DELETE USER',
+  VIEW_MERCHANT_VALUE = 'PERMISSION CAN VIEW MERCHANT',
+  UPDATE_MERCHANT_VALUE = 'PERMISSION CAN UPDATE MERCHANT',
+  DELETE_MERCHANT_VALUE = 'PERMISSION CAN DELETE MERCHANT',
+  VIEW_ALL_ANALYSIS_VALUE = 'PERMISSION CAN VIEW ALL ANALYSIS',
+  VIEW_ANALYSIS_VALUE = 'PERMISSION CAN VIEW ANALYSIS',
+  CREATE_ANALYSIS_VALUE = 'PERMISSION CAN CREATE ANALYSIS',
+}
+
+export const permissionMap = [
+  {
+    id: 1,
+    name: 'analytics',
+
+    permissions: [
+      {
+        id: 1,
+        key: PermissionKey.VIEW_ALL_ANALYSIS,
+        value: PermissionValue.VIEW_ALL_ANALYSIS_VALUE,
+      },
+      {
+        id: 2,
+        key: PermissionKey.VIEW_ANALYSIS,
+        value: PermissionValue.VIEW_ANALYSIS_VALUE,
+      },
+    ],
+  },
+
+  {
+    id: 2,
+    name: 'wallets',
+
+    permissions: [
+      {
+        id: 1,
+        key: PermissionKey.VIEW_WALLET,
+        value: PermissionValue.VIEW_WALLET_VALUE,
+      },
+      {
+        id: 2,
+        key: PermissionKey.LIST_WALLET,
+        value: PermissionValue.LIST_WALLET_VALUE,
+      },
+    ],
+  },
+
+  {
+    id: 3,
+    name: 'settings',
+
+    permissions: [
+      {
+        id: 1,
+        key: PermissionKey.ALL_SETTINGS,
+        value: PermissionValue.ALL_SETTINGS_VALUE,
+      },
+      {
+        id: 2,
+        key: PermissionKey.VIEW_USER,
+        value: PermissionValue.VIEW_USER_SETTINGS,
+      },
+      {
+        id: 3,
+        key: PermissionKey.VIEW_ALL,
+        value: PermissionValue.VIEW_ALL_VALUE,
+      },
+      {
+        id: 4,
+        key: PermissionKey.MANAGE_USER,
+        value: PermissionValue.CAN_MANAGE_USER_VALUE,
+      },
+    ],
+  },
+
+  {
+    id: 4,
+    name: 'others',
+
+    permissions: [
+      {
+        id: 1,
+        key: PermissionKey.VIEW_MERCHANT,
+        value: PermissionValue.VIEW_MERCHANT_VALUE,
+      },
+    ],
+  },
+];
+
+
+export const formatText = (arr) => {
+  return arr.map((ar) => {
+    if (ar.indexOf('.') === -1) {
+      return ar;
+    } else {
+      const i = ar.indexOf('.');
+      const test = ar.substring(i + 1);
+      return test;
+    }
+  });
+};
+
+export const usePermission = (val) => {
+  const { user } = useAuth();
+  const isPermission = user?.roles[0]?.permissions.includes(val);
+  return isPermission;
+};
+
+export const replaceSpaceWithUnderscore = (val: string) => {
+  return val.replaceAll(' ', '_');
+};
+export const removeUnderscore = (e) => e.replace(/_/g, ' ');
+
+export const usePermissions = (val) => {
+  const [permissions, setPermissions] = useState<string[]>(val);
+
+  const checkboxVal = useMemo(
+    () => (val, bool) => {
+      const arr = [];
+      arr.push(val.replaceAll(' ', '_'));
+      const item = bool ? arr : [];
+      setPermissions((prev) => {
+        if (bool) {
+          return [...prev, ...item];
+        } else {
+          const ar = [...prev, ...item];
+          ar.splice(ar.indexOf(val.replaceAll(' ', '_')), 1);
+          return ar;
+        }
+      });
+    },
+    [setPermissions],
+  );
+
+  const parentCheckbox = useMemo(
+    () => (val, bool) => {
+      const arr = permissionMap.filter((perm) => perm.name === val)[0];
+
+      setPermissions((prev) => {
+        if (bool) {
+          const set = new Set([
+            ...prev,
+            ...arr.permissions.map((ar) => ar.value.replaceAll(' ', '_')),
+          ]);
+          return Array.from(set);
+        } else {
+          const idx = [...prev].indexOf(arr.permissions[0].value.replaceAll(' ', '_'));
+          const arrCheckbox =
+            idx !== 0
+              ? [...prev].slice(0, [...prev].indexOf(arr.permissions[0].value.replaceAll(' ', '_')))
+              : [...prev].slice(arr.permissions.length);
+
+          const set = new Set(arrCheckbox);
+          return Array.from(set);
+        }
+      });
+    },
+    [],
+  );
+
+  return { permissions, setPermissions, checkboxVal, parentCheckbox };
+};
+
+export const useEditPermissions = (val) => {
+  const [permissions, setPermissions] = useState<string[]>(val);
+
+  const checkboxVal = useMemo(
+    () => (val, bool) => {
+      const arr = [];
+      arr.push(val.replaceAll(' ', '_'));
+      const item = bool ? arr : [];
+      setPermissions((prev) => {
+        if (bool) {
+          return [...prev, ...item];
+        } else {
+          const ar = [...prev, ...item];
+
+          ar.splice(ar.indexOf(val.replaceAll(' ', '_')), 1);
+
+          return [...ar];
+        }
+      });
+    },
+    [setPermissions],
+  );
+
+  const parentCheckbox = useMemo(
+    () => (val, bool) => {
+      const arr = permissionMap.filter((perm) => perm.name === val)[0];
+
+      setPermissions((prev) => {
+        if (bool) {
+          const set = new Set([
+            ...prev,
+            ...arr.permissions.map((ar) => ar.value.replaceAll(' ', '_')),
+          ]);
+
+          return Array.from(set);
+        } else {
+          for (let i = 0; i < arr.permissions.length; i++) {
+            const idx = [...prev].indexOf(arr.permissions[i].value.replaceAll(' ', '_'));
+
+            prev.splice(idx, 1);
+          }
+
+          const set = new Set(prev);
+          return Array.from(set);
+        }
+      });
+    },
+    [],
+  );
+
+  return { permissions, setPermissions, checkboxVal, parentCheckbox };
+};
+
+export const currentEnv = () => {
+  if (config.app_env === 'live') {
+    return config.decide_domain.live;
+  } else if (config.app_env === 'sandbox') {
+    return config.decide_domain.sandbox;
+  } else if (config.app_env === 'staging') {
+    return config.decide_domain.staging;
+  } else {
+    return config.decide_domain.development;
+  }
+}; */
